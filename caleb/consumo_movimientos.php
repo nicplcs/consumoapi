@@ -16,7 +16,8 @@
     echo "1. Ver todos los movimientos\n";
     echo "2. Agregar un nuevo movimiento\n"; 
     echo "3. Actualizar un movimiento\n";
-    $opcion = readline("Digite 0, 1, 2 o 3: ");
+    echo "4. Eliminar un movimiento\n";
+    $opcion = readline("Digite 0, 1, 2, 3 o 4: ");
 
     if ($opcion == 0) {
     $idBuscado = readline("Digite el ID del movimiento: ");
@@ -86,6 +87,11 @@
     curl_setopt($proceso, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($proceso, CURLOPT_POSTFIELDS, $data_json);
     curl_setopt($proceso, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($proceso, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Accept: application/json',
+    'Content-Length: ' . strlen($data_json)
+    ));
 
     $respuesta = curl_exec($proceso);
     $http_code = curl_getinfo($proceso, CURLINFO_HTTP_CODE);
@@ -200,4 +206,47 @@
     }
     }
     }
+    
+    //delete
+
+    elseif($opcion == 4){
+    $id_movimiento = readline("Digite el ID de movimiento que desee eliminar\n");
+
+    $data = array(
+        "id_movimiento" => $id_movimiento
+    );
+
+    $data_json = json_encode($data);
+
+    if (!function_exists('curl_init')) {
+    die('ERROR: cURL no está disponible');
+    }
+    echo "cURL está disponible\n";
+
+    $proceso = curl_init($url_delete);
+
+    curl_setopt($proceso, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($proceso, CURLOPT_POSTFIELDS, $data_json);
+    curl_setopt($proceso, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($proceso, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($data_json)
+    ));
+
+    $respuesta = curl_exec($proceso);
+    $http_code = curl_getinfo($proceso, CURLINFO_HTTP_CODE);
+
+    if(curl_errno($proceso)){
+        die('Eror en la peticion DELETE:'. curl_errno($proceso) .\n);
+    }
+
+    curl_close($proceso);
+
+        if ($http_code === 200) {
+        echo "Movimiento eliminado exitosamente.\n";
+    } else {
+        echo "Error al eliminar el movimiento. Código HTTP: $http_code\n";
+    }
+    }
 ?>
+//C:\xampp\php\php.exe consumo_movimientos.php
