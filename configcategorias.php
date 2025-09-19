@@ -1,0 +1,9 @@
+<?php
+
+
+$BASE_URL_CATEGORIAS = "http://localhost:8080/categorias";
+
+$URL_GET_CATEGORIAS   = $BASE_URL_CATEGORIAS;      // GET
+$URL_POST_CATEGORIA   = $BASE_URL_CATEGORIAS;      // POST
+$URL_PUT_CATEGORIA    = $BASE_URL_CATEGORIAS . "/"; // PUT (se agrega el ID)
+$URL_DELETE_CATEGORIA = $BASE_URL_CATEGORIAS . "/"; // DELETE (se agrega el ID)
